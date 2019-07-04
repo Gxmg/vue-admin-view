@@ -130,7 +130,7 @@
                       size="mini"
                       @click="openEditWindows(scope.row)"
                     >编辑</el-button>
-                    <el-button size="mini" type="normal">打印</el-button>
+                    <el-button size="mini"  @click="perview(scope.row)"  type="normal">打印</el-button>
                     <el-button size="mini" type="danger" @click="delDoc(scope.$index, scope.row)">删除</el-button>
                   </template>
                 </el-table-column>
@@ -428,7 +428,7 @@ export default {
     reupload(){
       console.log("重新上传");
       console.log(this.editForm);
-      this.$router.push("/upload")
+      
     },
     resetLabel() {
       this.reload();
