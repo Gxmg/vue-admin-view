@@ -41,17 +41,19 @@
                 <el-form-item label="机构简介" :label-width="formLabelWidth">
                     <el-input v-model="department.departmentIntroduction" autocomplete="off"></el-input>
                 </el-form-item>
+                <el-form-item label="机构编码" :label-width="formLabelWidth">
+                    <el-input v-model="department.departmentNumber" autocomplete="off"></el-input>
+                </el-form-item>
 
-
-                <!-- <el-form-item label="所属部门" :label-width="formLabelWidth">
+                <el-form-item label="所属机构" :label-width="formLabelWidth">
                   <el-cascader
-                    placeholder="选择部门"
+                    :placeholder="department.departmentPatentName"
                     :options="this.treeData.children"
                     filterable
                     :change-on-select="true"
                     @change="selectDepartment"
                   ></el-cascader>
-                </el-form-item>-->
+                </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">
                 <el-button @click="cancerAddDepartment">取 消</el-button>
@@ -68,11 +70,14 @@
                 <el-form-item label="组织简介" :label-width="formLabelWidth">
                     <el-input v-model="department.departmentIntroduction" autocomplete="off"></el-input>
                 </el-form-item>
+                <el-form-item label="机构编码" :label-width="formLabelWidth">
+                    <el-input v-model="department.departmentNumber" autocomplete="off"></el-input>
+                </el-form-item>
 
-                <el-form-item label="所属部门" :label-width="formLabelWidth">
+                <el-form-item label="所属机构" :label-width="formLabelWidth">
                     <el-cascader
                             ref="cascader"
-                            :placeholder="department.departmentName"
+                            :placeholder="department.departmentPatentName"
                             :options="this.treeData.children"
                             filterable
                             change-on-select
@@ -120,12 +125,15 @@
                         parent_id: "parent_id"
                     }
                 },
+                //新增机构
                 department: {
                     departmentName: "",
                     parent_id: 0,
                     departmentIntroduction: "",
                     docTotalNum: 0,
-                    docTotalPagenum: 0
+                    docTotalPagenum: 0,
+                    departmentNumber: "",
+                    departmentPatentName:""
                 }
                 // newDepartment: {
                 //   departmentName: "",
@@ -325,12 +333,15 @@
              */
             showEditDialog(item) {
                 // console.log("修改", item);
+                console.log(item.departmentNumber)
                 this.selectItem = item;
                 this.dialogTableVisible1 = true;
                 this.department.departmentName = item.name;
                 this.department.departmentIntroduction = item.instroduction;
                 this.department.id = item.id;
                 this.department.parent_id = item.parent_id;
+                this.department.departmentPatentName = this.getParentName(item);
+                this.department.departmentNumber = item.departmentNumber;
             },
 
             /**
@@ -381,6 +392,7 @@
                         name: this.department.departmentName,
                         instroduction: this.department.departmentIntroduction,
                         id: this.department.id,
+                        departmentNumber: this.department.departmentNumber,
                         parent_id:
                             this.selectParientId == 0
                                 ? this.department.parent_id
@@ -433,16 +445,25 @@
                 }
             },
 
-            getParentName(item) {
-                if (item.parent_id == 0) {
-                    return item.name + "";
-                } else {
-                    for (let i = 0; i < this.treeData.length; i++) {
-                        if (this.treeData[i].id == id) {
-                            this.parentName = this.parentName + this.treeData[i].name + "/";
-                        }
-                        return getParentName(item.parent_id) + this.parentName;
-                    }
+            // getParentName(item) {
+            //     if (item.parent_id == 0) {
+            //         return item.name + "";
+            //     } else {
+            //         for (let i = 0; i < this.treeData.length; i++) {
+            //             if (this.treeData[i].id == id) {
+            //                 this.parentName = this.parentName + this.treeData[i].name + "/";
+            //             }
+            //             return getParentName(item.parent_id) + this.parentName;
+            //         }
+            //     }
+            // },
+
+            getParentName(item){
+                console.log(item)
+                if(item.parent_id == 0){
+                    return "";
+                }else {
+                    return this.parentName
                 }
             },
 
@@ -467,7 +488,8 @@
                     postJsonRequest(url, {
                         parent_id: this.selectParientId,
                         name: this.department.departmentName,
-                        instroduction: this.department.departmentIntroduction
+                        instroduction: this.department.departmentIntroduction,
+                        departmentNumber: this.department.departmentNumber
                     })
                         .then(result => {
                             if (result.data.code === 200) {
@@ -494,7 +516,8 @@
                     this.department = {
                         departmentName: "",
                         departmentIntroduction: "",
-                        parent_id: 0
+                        parent_id: 0,
+                        departmentPatentName: ""
                     };
                 }
             },
@@ -503,12 +526,18 @@
                 this.selectParientId = 0;
                 this.department.departmentName = "";
                 this.department.departmentIntroduction = "";
+                this.departmentPatentName = "";
             },
             showAddDilog(item) {
+                let departmentPatentName = "";
+                if(item != null){
+                    departmentPatentName = item.name;
+                }
                 this.department = {
                     departmentName: "",
                     parent_id: 0,
-                    departmentIntroduction: ""
+                    departmentIntroduction: "",
+                    departmentPatentName:departmentPatentName,
                 };
                 this.dialogTableVisible = true;
                 if (item == null) {
@@ -543,7 +572,7 @@
                     width: 200,
                     align: "center",
                     formatter: item => {
-                        return "<span>" + item.id + "</span>";
+                        return "<span>" + item.departmentNumber + "</span>";
                     }
                 },
                 {
