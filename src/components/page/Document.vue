@@ -185,6 +185,8 @@
               <el-form :model="editForm" label-width="120px">
                   <el-form-item label="文件名:">
                     <el-input v-model="editForm.docName" style="width:80%"></el-input>
+                    &nbsp;&nbsp;
+                    <el-button @click="reupload" type="danger">重新上传</el-button>
                   </el-form-item>
                   <el-form-item v-model="editForm.department" label="上传部门" >
                      <el-cascader
@@ -236,9 +238,10 @@
                   
                   </el-form>
                   <span slot="footer" class="dialog-footer">
-                    <el-button @click="reupload" type="danger">重新上传</el-button>
-                    <el-button @click="canelUpdate">取 消</el-button>
+                    <!-- <el-button @click="reupload" type="danger">重新上传</el-button> -->
                     <el-button type="primary" @click="confimupdate">确 定</el-button>
+                    <el-button @click="canelUpdate">取 消</el-button>
+                    
                   </span>
                   </el-dialog>
                  <el-dialog
