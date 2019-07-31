@@ -863,9 +863,9 @@ export default {
       })
         .then(result => {})
         .catch(err => {});
-      this.$confirm("确定要预览该文件吗?", "提示")
-        .then(result => {
-          if (result) {
+      // this.$confirm("确定要预览该文件吗?", "提示")
+      //   .then(result => {
+      //     if (result) {
             let url = "";
             if (process.env.NODE_ENV === "development") {
               url = "/api/public/preViewFile";
@@ -899,9 +899,9 @@ export default {
                 }
               })
               .catch(err => {});
-          }
-        })
-        .catch(err => {});
+          // }
+        // })
+        // .catch(err => {});
     },
     getherf(row) {
       console.log(4444);
