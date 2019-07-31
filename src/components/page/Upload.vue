@@ -106,7 +106,7 @@
           multiple>
   <i class="el-icon-upload"></i>
   <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-  <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
+
 </el-upload>
         <span slot="footer" class="dialog-footer">
           <el-button @click="dialogVisible = false;this.$router.push('/document')">取 消</el-button>
@@ -132,6 +132,18 @@
     <el-button type="primary" @click="confimType">确 定</el-button>
   </span>
 </el-dialog>
+
+  <el-dialog
+    title="重新上传文件"
+    :visible.sync="dialogVisible5"
+    width="50%">
+
+    <span>这是一段信息</span>
+    <span slot="footer" class="dialog-footer">
+      <el-button @click="dialogVisible = false">取 消</el-button>
+      <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+    </span>
+  </el-dialog>
   </div>
 </template>
 
@@ -147,7 +159,6 @@ export default {
   data: function() {
     return {
       data: [
-        
         {
           superId: 0,
           children: [
@@ -195,6 +206,7 @@ export default {
       ],
       dialogVisible3: false,
       dialogVisible4: false,
+      dialogVisible5: false,
       value: [],
       value1: "",
       table: {
@@ -205,7 +217,7 @@ export default {
         number: "",
         tags: [],
         pageNum: "",
-        fileSource:""
+        fileSource: ""
       },
       fileSources: [
         {
@@ -234,7 +246,7 @@ export default {
         type: "",
         date: "",
         number: "",
-        fileSource:"",
+        fileSource: "",
         tags: [],
         pageNum: ""
       },
@@ -283,7 +295,6 @@ export default {
   },
 
   methods: {
-
     getSouce(item) {
       console.log(item);
     },
@@ -532,7 +543,7 @@ export default {
       this.inputVisible = false;
       this.inputValue = "";
     },
-    getAllFileSource(){
+    getAllFileSource() {
       let _this = this;
       let url = "";
       if (process.env.NODE_ENV === "development") {
@@ -540,13 +551,12 @@ export default {
       } else {
         url = "/getAllFileSource";
       }
-      postJsonRequest(url).then((result) => {
-        console.log(result);
-        this.fileSources = result.data.data;
-      }).catch((err) => {
-        
-      });
-
+      postJsonRequest(url)
+        .then(result => {
+          console.log(result);
+          this.fileSources = result.data.data;
+        })
+        .catch(err => {});
     }
   },
   created() {

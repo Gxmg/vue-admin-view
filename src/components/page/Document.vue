@@ -130,7 +130,7 @@
                       size="mini"
                       @click="openEditWindows(scope.row)"
                     >编辑</el-button>
-                    <el-button size="mini" type="normal">打印</el-button>
+                    <el-button size="mini"  @click="perview(scope.row)"  type="normal">打印</el-button>
                     <el-button size="mini" type="danger" @click="delDoc(scope.$index, scope.row)">删除</el-button>
                   </template>
                 </el-table-column>
@@ -287,6 +287,34 @@
         </span>
 </el-dialog>
 
+<el-dialog title="重新上传" :visible.sync="dialogVisible5" width="30%;">
+   <el-form style="width:480px;margin-left:30px" :model="editForm" label-width="120px">
+    <el-form-item label="页数">
+      <el-input v-model="editForm.pagesize"></el-input>
+    </el-form-item>
+  </el-form>
+  <el-upload
+  style="margin-left:150px"
+  class="upload-demo"
+  :headers="config"
+  :auto-upload="false"
+  ref="reupload"
+  :data="editForm"
+  drag
+  :action="reuploadUrl"
+  :on-success="reuploadSuccess"
+  >
+ 
+  <i class="el-icon-upload"></i>
+  <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+  <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
+</el-upload>
+ <span slot="footer" class="dialog-footer">
+          <el-button @click="dialogVisible5 = false">取 消</el-button>
+          <el-button type="primary" @click="confimReuploadFile">确 定</el-button>
+        </span>
+</el-dialog>
+
               <!-- <el-checkbox
                 class="document-display-checkAll"
                 :indeterminate="isIndeterminate"
@@ -401,6 +429,15 @@ export default {
   },
   created() {},
   computed: {
+    reuploadUrl(){
+      let url = ""
+      if(process.env.NODE_ENV === "development"){
+        url = "/api/reUploadFile"
+      }else{
+        url = "/reUploadFile"
+      }
+      return url;
+    },
     uploadsannex: function() {
       let url = "";
       if (process.env.NODE_ENV === "development") {
@@ -412,6 +449,21 @@ export default {
     }
   },
   methods: {
+    reuploadSuccess(res){
+        // this.open3("添加附件成功!")
+      console.log(res);
+      if (res.code != 200) {
+        this.open6(res.msg);
+      } else {
+        this.open3(res.msg);
+      }
+      this.reload();
+      
+    },
+    confimReuploadFile(){
+      console.log("==================================================");
+      this.$refs.reupload.submit();
+    },
     getAllFileSources(){
       let url = "";
       let _this = this;
@@ -431,7 +483,8 @@ export default {
     reupload(){
       console.log("重新上传");
       console.log(this.editForm);
-      this.$router.push("/upload")
+      this.dialogVisible5 = true;
+      
     },
     resetLabel() {
       this.reload();
@@ -1238,13 +1291,15 @@ export default {
         tagArrayList: "",
         docLabelArrayList: "",
         dynamicTags: ["标签一"],
-        fileSourceName:""
+        fileSourceName:"",
+        pagesize:0
       },
       dialogVisible: false,
       dialogVisible1: false,
       dialogVisible2: false,
       dialogVisible3: false,
       dialogVisible4: false,
+      dialogVisible5: false,
       departs: [],
       displayMode: "0", //展示模式0:列表模式1:图标模式
       dynamicTags: ["标签一", "标签二", "标签三"],
