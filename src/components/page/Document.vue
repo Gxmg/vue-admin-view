@@ -1069,6 +1069,14 @@ export default {
         url = "/public/getDocsBySearchParam";
       }
 
+      //判断是否已经重新上传
+      // alert(this.docLabels);
+      // console.log("docLabels:"+this.docLabels)
+      if(this.isreloaded == false){
+        // this.clickNode = ""
+      }
+      console.log(this.clickNode)
+      console.log("------------------------------------------------")
       postJsonRequest(url, {
         pageInfo: { pageSize: this.pageSize, currentPage: this.currentPage },
         docLabels: this.clickNode,
@@ -1258,7 +1266,7 @@ export default {
   },
   data() {
     return {
-      
+      isreloaded:false,
       fileSources:[],
       defaultKey: [],
       inputVisible: false,
