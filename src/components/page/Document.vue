@@ -458,9 +458,10 @@ export default {
         this.open3(res.msg);
       }
       this.reload();
-      
+      // localStorage.setItem("isReupload",false);
     },
     confimReuploadFile(){
+      localStorage.setItem("isReupload",JSON.stringify(this.category) );
       console.log("==================================================");
       this.$refs.reupload.submit();
     },
@@ -483,6 +484,7 @@ export default {
     reupload(){
       console.log("重新上传");
       console.log(this.editForm);
+      console.log(this.editForm.docLabelArrayList)
       this.dialogVisible5 = true;
       
     },
@@ -643,6 +645,8 @@ export default {
     },
     openEditWindows(row) {
       console.log(row);
+      console.log(row.docLabelArrayList);
+      this.category = row.docLabelArrayList;
       this.editForm.docId = row.docId;
       this.editForm.docName = row.docName;
       this.editForm.suffixName = row.suffixName;
@@ -1013,6 +1017,7 @@ export default {
     },
     handleCurrentChange(val) {
       this.currentPage = val;
+      // if(localStorage.getItem(""))
       this.getDocsBySearchParam();
     },
     showInput() {
@@ -1061,6 +1066,10 @@ export default {
       return moment(date).format("YYYY-MM-DD");
     },
     search() {
+      // this.isreloaded = true;
+      if(localStorage.getItem("isReupload")){
+        localStorage.removeItem("isReupload");
+      }
       this.handleCurrentChange(1);
     },
     getDocsBySearchParam() {
@@ -1075,11 +1084,13 @@ export default {
       //判断是否已经重新上传
       // alert(this.docLabels);
       // console.log("docLabels:"+this.docLabels)
-      if(this.isreloaded == false){
+    //  console.log(localStorage.getItem("isReupload"))
+      if(localStorage.getItem("isReupload")){
         // this.clickNode = ""
+        this.clickNode = JSON.parse(localStorage.getItem("isReupload")); 
       }
-      console.log(this.clickNode)
-      console.log("------------------------------------------------")
+      console.log("click");
+      console.log(this.clickNode);
       postJsonRequest(url, {
         pageInfo: { pageSize: this.pageSize, currentPage: this.currentPage },
         docLabels: this.clickNode,
@@ -1093,6 +1104,7 @@ export default {
           if (result.data.code === 200) {
             // this.tableData = result.data.data.list;
             let url = "";
+            this.clickNode = [];
             if (process.env.NODE_ENV === "development") {
               url = "/api/getName";
             } else {
@@ -1252,12 +1264,18 @@ export default {
       console.log("this.selectDepartmentId");
     }
   },
-
+  created(){
+    console.log("create");
+    
+  },
   mounted() {
     // this.fitterItems = this.items;
     // for (let i = 0; i < this.items.length; i++) {
     //   this.allCheckList.push(this.items[i].id);
     // }
+    // console.log(this.GLOBAL)
+    // localStorage.setItem("isReload",false);
+    // console.log(localStorage.getItem("isReupload"));
     this.getAllTags();
     this.getDocLabelsTree();
     this.getMyChildDepartments();
@@ -1269,7 +1287,9 @@ export default {
   },
   data() {
     return {
-      isreloaded:false,
+      testNum:0,
+      category:[],
+      isreloaded:this.GLOBAL.isreupload,
       fileSources:[],
       defaultKey: [],
       inputVisible: false,
