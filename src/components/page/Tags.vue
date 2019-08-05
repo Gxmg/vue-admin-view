@@ -183,50 +183,50 @@ export default {
       num: 1,
       label: "",
       data: [
-        {
-          superId: 0,
-          children: [
-            {
-              superId: 19,
-              children: null,
-              list: null,
-              id: 22,
-              label: "表情包"
-            },
-            {
-              superId: 19,
-              children: [
-                {
-                  superId: 26,
-                  children: null,
-                  list: null,
-                  id: 27,
-                  label: "ppt素材"
-                }
-              ],
-              list: null,
-              id: 26,
-              label: "透明素材"
-            }
-          ],
-          list: null,
-          id: 19,
-          label: "图片"
-        },
-        {
-          superId: 0,
-          children: null,
-          list: null,
-          id: 20,
-          label: "背景图"
-        },
-        {
-          superId: 0,
-          children: null,
-          list: null,
-          id: 21,
-          label: "风景图"
-        }
+        // {
+        //   superId: 0,
+        //   children: [
+        //     {
+        //       superId: 19,
+        //       children: null,
+        //       list: null,
+        //       id: 22,
+        //       label: "表情包"
+        //     },
+        //     {
+        //       superId: 19,
+        //       children: [
+        //         {
+        //           superId: 26,
+        //           children: null,
+        //           list: null,
+        //           id: 27,
+        //           label: "ppt素材"
+        //         }
+        //       ],
+        //       list: null,
+        //       id: 26,
+        //       label: "透明素材"
+        //     }
+        //   ],
+        //   list: null,
+        //   id: 19,
+        //   label: "图片"
+        // },
+        // {
+        //   superId: 0,
+        //   children: null,
+        //   list: null,
+        //   id: 20,
+        //   label: "背景图"
+        // },
+        // {
+        //   superId: 0,
+        //   children: null,
+        //   list: null,
+        //   id: 21,
+        //   label: "风景图"
+        // }
       ],
       defaultProps: {
         children: "children",
