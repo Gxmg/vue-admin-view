@@ -108,6 +108,7 @@
                     </el-form>
                   </template>
                 </el-table-column>
+                <el-table-column prop="docNumber" label="编号"></el-table-column>
                 <el-table-column prop="docName" label="文件名" @click="perview(scope.row)">
                     <template slot-scope="scope">
                         <span style="margin-left: 10px;cursor: pointer" @click="perview(scope.row)">{{ scope.row.docName}}</span>
@@ -183,6 +184,9 @@
               @close="canelUpdate"
               width="50%">
               <el-form :model="editForm" label-width="120px">
+                  <el-form-item label="编号:">
+                      <el-input v-model="editForm.docNumber" style="width:80%"></el-input>&nbsp;&nbsp;
+                  </el-form-item>
                   <el-form-item label="文件名:">
                     <el-input v-model="editForm.docName" style="width:80%"></el-input>
                     &nbsp;&nbsp;
@@ -199,8 +203,8 @@
                   ></el-cascader>
                   </el-form-item>
                   <el-form-item label="所属分类:" style="width:60%">
-                     <el-input v-model="editForm.docLabelArrayList"  style="width:300px" placeholder="请选择文件类型"> 
-                     </el-input> 
+                     <el-input v-model="editForm.docLabelArrayList"  style="width:300px" placeholder="请选择文件类型">
+                     </el-input>
                   </el-form-item>
                   <el-button size="mini" style="margin-left:450px;margin-top:-50px;display:flex;height:32px" @click="choosetp">选择分类</el-button>
                   <el-form-item label="文件来源:" style="width:100%;margin-top:15px">
@@ -235,8 +239,8 @@
                       </el-input>
                       <el-button v-else class="button-new-tag" size="small" @click="showInput">+ New Tag</el-button>
                   </el-form-item>
-                  
-                  </el-form>
+
+              </el-form>
                   <span slot="footer" class="dialog-footer">
                     <!-- <el-button @click="reupload" type="danger">重新上传</el-button> -->
                     <el-button type="primary" @click="confimupdate">确 定</el-button>
@@ -548,6 +552,7 @@ export default {
       let edit = {
         docId: this.editForm.docId,
         docName: this.editForm.docName,
+        docNumber: this.editForm.docNumber,
         docSavePath: this.editForm.docSavePath,
         userId: this.editForm.userId,
         departmentName: this.editForm.departmentName,
@@ -569,6 +574,7 @@ export default {
           for (let i = 0; i < _this.allTags.length; i++) {
             _this.allTags[i].type = "normal";
           }
+          this.reload();
           // _this.dialogVisible2 = false;
         })
         .catch(err => {
@@ -578,7 +584,7 @@ export default {
           _this.dialogVisible2 = false;
         });
       _this.dialogVisible2 = false;
-      this.reload();
+      // this.reload();
     },
     confimType() {
       let aKey = this.$refs.tree.getCheckedNodes();
@@ -649,6 +655,7 @@ export default {
       this.category = row.docLabelArrayList;
       this.editForm.docId = row.docId;
       this.editForm.docName = row.docName;
+      this.editForm.docNumber = row.docNumber;
       this.editForm.suffixName = row.suffixName;
       this.editForm.docSavePath = row.docSavePath;
       this.editForm.departmentName = row.departmentName;
@@ -1127,6 +1134,7 @@ export default {
                   0,
                   item.docName.lastIndexOf(".")
                 ),
+                docNumber: item.docNumber,
                 docPostTime: item.docPostTime,
                 docSavePath: item.docSavePath,
                 suffixName: item.suffixName,
@@ -1310,6 +1318,7 @@ export default {
       editForm: {
         docId: "",
         docName: "",
+        docNumber: "",
         docSavePath: "",
         userId: "",
         departmentName: "",
