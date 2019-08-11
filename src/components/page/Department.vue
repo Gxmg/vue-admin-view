@@ -332,16 +332,17 @@
              * @param item 选中部门
              */
             showEditDialog(item) {
-                // console.log("修改", item);
+                console.log("修改", item);
                 console.log(item.departmentNumber)
                 this.selectItem = item;
-                this.dialogTableVisible1 = true;
                 this.department.departmentName = item.name;
                 this.department.departmentIntroduction = item.instroduction;
                 this.department.id = item.id;
                 this.department.parent_id = item.parent_id;
-                this.department.departmentPatentName = this.getParentName(item);
+                this.getParentName(item);
                 this.department.departmentNumber = item.departmentNumber;
+                // this.dialogTableVisible1 = true;
+                console.log( this.department.departmentPatentName );
             },
 
             /**
@@ -457,15 +458,44 @@
             //         }
             //     }
             // },
-
             getParentName(item){
-                console.log(item)
-                if(item.parent_id == 0){
-                    return "";
-                }else {
-                    return this.parentName
+                this.loading = true;
+                let url = "";
+                if (process.env.NODE_ENV === "development") {
+                    url = "/api/admin/getDepartmentById";
+                } else {
+                    url = "/admin/getDepartmentById";
                 }
+                let departmentId = item.parent_id;
+                getRequest(url,{
+                    departmentId:departmentId
+                })
+                    .then(result => {
+                        if (result.data.code === 200) {
+                            console.log(result.data.data.name)
+                            this.department.departmentPatentName =  result.data.data.name;
+                            this.loading = false;
+                            this.dialogTableVisible1 = true;
+                        } else {
+                            this.loading = false;
+                            this.dialogTableVisible1 = true;
+                        }
+                    })
+                    .catch(e => {
+                        this.loading = false;
+                        this.dialogTableVisible1 = true;
+                    });
             },
+
+
+            // getParentName(item){
+            //     console.log(item)
+            //     if(item.parent_id == 0){
+            //         return "";
+            //     }else {
+            //         return this.parentName
+            //     }
+            // },
 
             commitAddDepartment() {
                 let url = "";
