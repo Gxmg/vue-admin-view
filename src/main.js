@@ -13,8 +13,9 @@ import './assets/css/icon.css';
 import './components/common/directives';
 import "babel-polyfill";
 import "./assets/font/iconfont.js";
+import globalVariable from './components/common/global'
 
-
+Vue.prototype.GLOBAL = globalVariable
 Vue.config.productionTip = false
 Vue.use(VueI18n);
 Vue.use(elCascaderMulti);
