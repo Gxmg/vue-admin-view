@@ -8,16 +8,18 @@
       </el-breadcrumb>
     </div>
     <div class="container">
-      <div class="plugins-tips">将文件拖拽到此处</div>
+      <div class="plugins-tips">将文件拖拽到此处 <span class="plugins-tips" style="margin-left:70%">文件号:</span><span>{{fileNumber}}</span></div>
       <el-upload class="upload-demo"  ref="upload" :data="table" 
       :headers="config"
       :file-list="fileList" drag :action="uploadFile" name="file" 
       :before-upload="beforeUpload" :on-success="success" :on-error="wrong" :auto-upload="false"
       :limit="1" :on-exceed="overNumber" >
         <i class="el-icon-upload"></i>
+        
         <div class="el-upload__text">
-          将文件拖到此处，或
+          将文件拖到此处 ，或
           <em>点击上传</em>
+         
         </div>
         <div class="el-upload__tip" slot="tip">文件不能超过100M</div>
       </el-upload>
@@ -204,12 +206,14 @@ export default {
           label: "风景图"
         }
       ],
+      fileNumber:"",
       dialogVisible3: false,
       dialogVisible4: false,
       dialogVisible5: false,
       value: [],
       value1: "",
       table: {
+      
         department: "",
         region: "",
         type: "",
@@ -267,6 +271,7 @@ export default {
     console.log(this.tags);
     console.log(JSON.stringify(this.dynamicTags));
     // this.reload();
+    this.getFileNumber();
     this.getAllTags();
     this.getDocLabelsTree();
   },
@@ -295,6 +300,19 @@ export default {
   },
 
   methods: {
+    getFileNumber(){
+      let url = "";
+      if (process.env.NODE_ENV === "development") {
+        url = "/api/getFileNumber";
+      } else {
+        url = "/getFileNumber";
+      }
+      postJsonRequest(url).then((result) => {
+        this.fileNumber = result.data.data;
+      }).catch((err) => {
+        
+      });
+    },
     getSouce(item) {
       console.log(item);
     },

@@ -344,9 +344,9 @@ export default {
       console.log(node1);
       let url = "";
       if (process.env.NODE_ENV === "development") {
-        url = "/api/public/updateLabels";
+        url = "/api/public/addLabels";
       } else {
-        url = "/public/updateLabels";
+        url = "/public/addLabels";
       }
       postJsonRequest(url, node1)
         .then(result => {
